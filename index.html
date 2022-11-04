@@ -95,7 +95,6 @@
             document.getElementById("time").innerHTML = checkTime(tim.getHours()) + ":" 
             + checkTime(tim.getMinutes()) + ":" + checkTime(tim.getSeconds())
 
-            console.log(tim.getTime() - timmi)
             if (tim.getTime() - timmi >= 60*60*1000) {
                 location.href = "http://wemo1.pages.dev"
             }
