@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title id="title">0 0.000000000</title>
+
+    <meta name="monetization" content="$ilp.uphold.com/2iK3hA4APmYe"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+        }
+
+        .hide-ele {
+            display: none;
+        }
+
+        .main-ele{
+            text-align: center;
+        }
+
+        .middle-ele{
+            font-size: larger;
+            width: fit-content;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" class="main-ele">
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <div class="middle-ele">
+            <h1>
+                <span>wemo0.</span><span id="status-on" style="color: #4caf50;" class="hide-ele">ON</span><span
+                    id="status-off" style="color: red;">OFF</span>
+            </h1>
+            <br />
+            <div>
+                <h1>
+                    <span id="total">0.000000000</span>
+                </h1>
+                <h1>
+                    <span id="time">00:00:00</span>
+                </h1>
+            </div>
+            <br />
+            <div>
+                One hour to <a href="http://wemo1.surge.sh" target="_blank">next website.</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const timmi = (new Date()).getTime()
+
+        let total = 0
+        let scale
+        if (document.monetization) {
+            document.monetization.addEventListener('monetizationprogress', ev => {
+                // Show exclusive content to the user if monetization is on
+                document.getElementById("status-off").classList.add("hide-ele")
+                document.getElementById("status-on").classList.remove("hide-ele")
+
+                // initialize currency and scale on first progress event
+                if (total === 0) {
+                    scale = ev.detail.assetScale
+                    // document.getElementById('currency').innerText = ev.detail.assetCode
+                }
+
+                total += Number(ev.detail.amount)
+
+                const formatted = (total * Math.pow(10, -scale)).toFixed(scale)
+                document.getElementById('total').innerText = formatted
+                document.getElementById('title').innerText = "0 " + formatted
+            })
+        }
+        
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+
+        function setTimeLocal() {
+            let tim = new Date()
+            document.getElementById("time").innerHTML = checkTime(tim.getHours()) + ":" 
+            + checkTime(tim.getMinutes()) + ":" + checkTime(tim.getSeconds())
+
+            console.log(tim.getTime() - timmi)
+            if (tim.getTime() - timmi >= 60*60*1000) {
+                location.href = "http://wemo1.surge.sh"
+            }
+        }
+    </script>
+    <script>
+        setTimeLocal()
+        setInterval(() => {
+            setTimeLocal();
+        }, 990);
+    </script>
+</body>
+
+</html>
